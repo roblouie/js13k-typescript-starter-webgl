@@ -13,6 +13,7 @@ JS13k TypeScript Starter does the following for you automatically:
 * Compresses the RoadRollered `index.html` file and any additional assets (images, etc) with [ECT](https://github.com/fhanau/Efficient-Compression-Tool)
 
 
+
 ## Quick Start
 
 Install dependencies: `npm install`
@@ -26,21 +27,23 @@ screen where you can move a basketball around while simple WebGL shaders change 
 While the running code is purposely minimal, allowing you to build whatever game you'd like, it does come with some
 basic helpful game related code:
 
-####Simple State Machine 
+
+#### Simple State Machine 
 Easily manage multiple states, run setup and teardown code when switching, and pass variables
   to states on change. Used in the included demo to switch from the menu to a level, but useful for enemy states, player states, etc.
 
-####Responsive Fullscreen
+#### Responsive Fullscreen
 The main canvas will always fill as much of the screen as it can while maintaining a 16:9
   aspect ratio. There is also a fullscreen toggle on the menu to go completely fullscreen.
 
-####Locked 60 FPS by Default
+#### Locked 60 FPS by Default
 A surprising number of games are unplayable each year when they run at 2x (or more)
   the intended speed. Screens with a refresh rate higher than 60hz are very common. For easy consistency,
   the framerate is locked at 60. However, the game state does take in an interval argument, so this could instead be
   used to update your physics with an interval, allowing you to unlock the framerate.
 
-####Controls Wrapper with Controller Support
+
+#### Controls Wrapper with Controller Support
 Play with a keyboard or connect a controller to play. Includes button mapping for Xbox controllers and support for analog deadzone.
 
 ## Starter Kit Build Features
@@ -109,8 +112,8 @@ The regular build process runs RoadRollers regular build. It spends a couple min
 then compresses your code. This means every build takes 2+ minutes, and it doesn't really have time to find
 the best compression config. This is why I have added two scripts: 
 
-`npm run find-best-roadroller`: Will ask you how many seconds to search for a better config. Beyond 10 minutes you'll 
-get diminishing returns for sure, but will run as long as you tell it and save the config to `./roadroller-config.json`.
+`npm run find-best-roadroller`: Will ask you how many seconds to search for a better config. It will run as long as you tell it, 
+or until it runs out of room in the buffer, and save the config to `./roadroller-config.json`.
 
 `npm run build-with-best-roadroller`: Runs the same build process as the regular build, except it tells RoadRoller to
 use the config from `./roadroller-config.json`. Not only will this save you a decent amount of space 
@@ -131,6 +134,6 @@ It does this to try to prevent bugs in the minified code. It sees something like
 and thinks you might be wanting to use those properties to set css, modify a canvas, or access element children. Even if
 you provide type information and never use these properties in that way, the minifiers are not smart enough to know this.
 
-To avoid lots of unminified property names in your code, avoid using these reserved words. This eslint setting will help
+To avoid lots of unminified property names in your code, avoid using these reserved words (unless of course you are doing the thing they are reserved for). This eslint setting will help
 you find any. It is not an exhaustive list however, and it's worth checking `dist/output.js` occasionally for non-minified
 properties.
