@@ -1,4 +1,4 @@
-# JS13K TypeScript Starter
+# JS13K TypeScript Starter WebGL
 
 **This starter kit is designed to have a powerful but easy-to-use build process allowing you to focus on building your
 game rather than how to shrink it.**
@@ -12,6 +12,7 @@ JS13k TypeScript Starter does the following for you automatically:
 * Compresses all the above with [RoadRoller](https://github.com/lifthrasiir/roadroller) (see [RoadRoller wiki](https://github.com/lifthrasiir/roadroller/wiki) for details)
 * Compresses the RoadRollered `index.html` file and any additional assets (images, etc) with [ECT](https://github.com/fhanau/Efficient-Compression-Tool)
 
+If you do not want to use WebGL, [use the non-WebGL version.](https://github.com/roblouie/js13k-typescript-starter)
 
 
 ## Quick Start
