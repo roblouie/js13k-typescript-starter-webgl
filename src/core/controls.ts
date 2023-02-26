@@ -1,3 +1,5 @@
+import { magnitude } from '@/helpers';
+
 const enum XboxControllerButton {
   A,
   B,
@@ -51,7 +53,7 @@ class Controls {
     this.inputDirection.y = (upVal + downVal) || gamepad?.axes[1] || 0;
 
     const deadzone = 0.1;
-    if (Math.hypot(this.inputDirection.x, this.inputDirection.y) < deadzone) {
+    if (magnitude(this.inputDirection) < deadzone) {
       this.inputDirection.x = 0;
       this.inputDirection.y = 0;
     }

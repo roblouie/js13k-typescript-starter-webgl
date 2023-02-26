@@ -3,6 +3,8 @@ import { drawEngine } from '@/core/draw-engine';
 import { controls } from '@/core/controls';
 import { gameStateMachine } from '@/game-state-machine';
 import { menuState } from '@/game-states/menu.state';
+import { renderWebGl } from '@/web-gl/renderer';
+import { clamp } from '@/helpers';
 
 class GameState implements State {
   ballImage = new Image();
@@ -41,9 +43,17 @@ class GameState implements State {
     this.ballVelocity.x *= 0.99;
     this.ballVelocity.y *= 0.99;
 
-    drawEngine.context.fillStyle = 'blue';
-    drawEngine.context.fillRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
-    drawEngine.context.drawImage(this.ballImage, this.ballPosition.x, this.ballPosition.y, this.ballSize, this.ballSize);
+    // Clamp top speed
+    this.ballVelocity = clamp(this.ballVelocity, 25);
+
+    drawEngine.context.drawImage(
+      this.ballImage,
+      this.ballPosition.x,
+      this.ballPosition.y,
+      this.ballSize,
+      this.ballSize
+    );
+    renderWebGl(this.ballPosition, this.ballVelocity);
 
     if (controls.isEscape) {
       gameStateMachine.setState(menuState);
