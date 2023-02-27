@@ -68,7 +68,7 @@ As configured here in the demo app, any time a `.glsl` file is created or update
 automatically be minified and placed in `./src/web-gl/shaders.ts`. As this can take a couple seconds, a debounce is added
 to stop the command from running after every single text change.
 
-Any uniforms, attributes, or outputs you define in your shader will become exported variables from the output file. This
+Any uniforms, attributes, or outputs you define in your shader will become exported variables in the output file. This
 allows you to get those positions and use them in your TypeScript code. The contents of the shader files will also be
 exported as strings, the variable names will be the filenames with any `.` being replaced by `_`.
 
