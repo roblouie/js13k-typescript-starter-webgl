@@ -53,7 +53,7 @@ While developing, simply use `npm run serve` to start a server and get hot modul
 ### WebGL
 
 The `serve` command will automatically look for changes to any file ending in `.glsl` and run the shader minification plugin.
-You can configure this plugin in `vite.config.ts`, including turning it off completely if you don't want to use WebGL.
+You can configure this plugin in `vite.config.ts`, including turning it off completely if you don't want to use it.
 
 ```ts
 const shaderMinifyConfig = {
