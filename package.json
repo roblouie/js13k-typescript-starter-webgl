@@ -34,5 +34,8 @@
     "vite": "vite serve",
     "tsc": "tsc --watch --noEmit"
   },
-  "author": "Rob Louie"
+  "author": "Rob Louie",
+  "dependencies": {
+    "gl-matrix": "^3.4.3"
+  }
 }

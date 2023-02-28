@@ -3,7 +3,7 @@ import { drawEngine } from '@/core/draw-engine';
 import { controls } from '@/core/controls';
 import { gameStateMachine } from '@/game-state-machine';
 import { menuState } from '@/game-states/menu.state';
-import { renderWebGl } from '@/web-gl/renderer';
+import { draw, renderWebGl } from '@/web-gl/renderer';
 import { clamp } from '@/helpers';
 
 class GameState implements State {
@@ -53,7 +53,7 @@ class GameState implements State {
       this.ballSize,
       this.ballSize
     );
-    renderWebGl(this.ballPosition, this.ballVelocity);
+    draw();
 
     if (controls.isEscape) {
       gameStateMachine.setState(menuState);

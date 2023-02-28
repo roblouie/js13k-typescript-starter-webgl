@@ -1,4 +1,4 @@
-export function magnitude(point: DOMPoint) {
+export function magnitude(point: VectorLike) {
   return Math.hypot(point.x, point.y, point.z);
 }
 
