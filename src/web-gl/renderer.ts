@@ -22,7 +22,7 @@ const fragmentShaderSrc = `#version 300 es
 precision mediump float;
 
 in vec4 vColor;
-in vec4 ShadowCoord;
+in vec4 shadowCoord;
 
 uniform sampler2D shadowMap;
 
@@ -30,7 +30,8 @@ out vec4 fragColor;
 
 void main()
 {
-    fragColor = vColor;
+  float visibility = texture(shadowMap, shadowCoord.xy).r < shadowCoord.z ? 0.5 : 1.0;
+  fragColor = visibility * vColor;
 }`;
 
 const depthVertexShader = `#version 300 es
@@ -112,6 +113,7 @@ const depthFramebuffer = gl.createFramebuffer();
 gl.bindFramebuffer(gl.FRAMEBUFFER, depthFramebuffer);
 gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.TEXTURE_2D, depthTexture, 0);
 
+const shadowMapLocation = gl.getUniformLocation(program, 'shadowMap');
 
 // Set Camera MVP Matrix
 const projectionLoc = gl.getUniformLocation(program, 'modelViewProjection');
@@ -126,12 +128,26 @@ gl.uniformMatrix4fv(projectionLoc, false, modelViewProjection);
 
 // Set Light MVP Matrix
 const depthMvpLocation = gl.getUniformLocation(depthProgram, 'depthMvp');
-const inverseLightDirection = new DOMPoint(0.5, 2, 2);
-const depthProjectionMatrix = mat4.ortho(mat4.create(), -10,10,-10,10,-10,20);
+const inverseLightDirection = new DOMPoint(0.5, 2, -2);
+const depthProjectionMatrix = mat4.ortho(mat4.create(), -1,1,-1,1,-1,4);
 const depthViewMatrix = mat4.lookAt(mat4.create(), [inverseLightDirection.x, inverseLightDirection.y, inverseLightDirection.z], [0,0,0], [0,1,0]);
 const depthMvp = mat4.multiply(mat4.create(), depthProjectionMatrix, depthViewMatrix);
 gl.useProgram(depthProgram);
 gl.uniformMatrix4fv(depthMvpLocation, false, depthMvp);
+
+
+// Set Depth Bias MVP Matrix
+const depthBiasMvpLocation = gl.getUniformLocation(program, 'depthBiasMvp');
+const biasMatrix = new DOMMatrix([
+  0.5, 0.0, 0.0, 0.0,
+  0.0, 0.5, 0.0, 0.0,
+  0.0, 0.0, 0.5, 0.0,
+  0.5, 0.5, 0.5, 1.0
+]).toFloat32Array();
+const biasMvpMatrix = mat4.multiply(mat4.create(), biasMatrix, depthMvp);
+
+gl.useProgram(program);
+gl.uniformMatrix4fv(depthBiasMvpLocation, false, biasMvpMatrix);
 
 export const draw = () => {
   gl.useProgram(depthProgram);
@@ -143,7 +159,11 @@ export const draw = () => {
   gl.bindFramebuffer(gl.FRAMEBUFFER, null);
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
   gl.useProgram(program);
+  gl.bindTexture(gl.TEXTURE_2D, depthTexture);
+  gl.uniform1i(shadowMapLocation, 0);
+
   gl.drawArrays(gl.TRIANGLES, 0, 72);
 };
 
